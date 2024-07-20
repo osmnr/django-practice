@@ -1,70 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To-Do Index</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 flex flex-col min-h-screen">
-    <!-- Header -->
-    <header class="bg-indigo-600 text-white py-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-2xl font-bold">To-Do List Application</h1>
-        </div>
-    </header>
-    
-    <!-- Main Content -->
-    <main class="flex-grow p-6">
-        <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden md:max-w-2xl">
-            <div class="md:flex">
-                <div class="p-8 w-full">
-                    <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">To-Do List</div>
-                    <div class="mt-2">
-                        <ul class="space-y-4">
-                            <li class="flex items-center justify-between">
-                                <span class="text-gray-700">Task 1</span>
-                                <div>
-                                    <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
-                                    <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
-                                </div>
-                            </li>
-                            <li class="flex items-center justify-between">
-                                <span class="text-gray-700">Task 2</span>
-                                <div>
-                                    <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
-                                    <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
-                                </div>
-                            </li>
-                            <li class="flex items-center justify-between">
-                                <span class="text-gray-700">Task 3</span>
-                                <div>
-                                    <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
-                                    <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
-                                </div>
-                            </li>
-                            <li class="flex items-center justify-between">
-                                <span class="text-gray-700">Task 4</span>
-                                <div>
-                                    <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
-                                    <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="mt-4">
-                        <button class="px-4 py-2 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-700">Add Task</button>
-                    </div>
+{% extends 'todoList/base.html' %}
+
+
+{% block mainContent%}
+
+  <!-- Main Content -->
+  <main class="flex-grow p-6">
+    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden md:max-w-2xl">
+        <div class="md:flex">
+            <div class="p-8 w-full">
+                <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">To-Do List</div>
+                <div class="mt-2">
+                    <ul class="space-y-4">
+                        {% for task in filteredList%}
+                        <li class="flex items-center justify-between">
+                            {% if task.isDone %}
+                            <span class="text-gray-700"><strike>{{task.taskName}}</strike></span>
+                            {% else  %}
+                            <span class="text-gray-700">{{task.taskName}}</span>
+                            {% endif %}
+                            <div>
+                                {% if task.isDone %}
+                                <button class="px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded-md hover:bg-yellow-700">Undone</button>
+                                {% else  %}
+                                <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
+                                {% endif %}
+                                <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="mt-4">
+                    <button class="px-4 py-2 bg-indigo-500 text-white text-sm font-medium rounded-md hover:bg-indigo-700">Add Task</button>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>
 
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4">
-        <div class="container mx-auto text-center">
-            <p>&copy; 2024 To-Do List Application. All rights reserved.</p>
-        </div>
-    </footer>
-</body>
-</html>
+
+{% endblock mainContent%}
