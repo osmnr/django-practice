@@ -20,11 +20,11 @@
                             {% endif %}
                             <div>
                                 {% if task.isDone %}
-                                <button class="px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded-md hover:bg-yellow-700">Undone</button>
+                                <a href="{% url 'todoList:update' task.id%}" class="px-2 py-1 bg-yellow-500 text-white text-xs font-medium rounded-md hover:bg-yellow-700">Undone</a>
                                 {% else  %}
-                                <button class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</button>
+                                <a href="{% url 'todoList:update' task.id%}" class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</a>
                                 {% endif %}
-                                <button class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</button>
+                                <a href= "{% url 'todoList:delete' task.id%}" class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</a>
                             </div>
                         </li>
                         {% endfor %}
