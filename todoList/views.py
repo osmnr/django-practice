@@ -3,19 +3,25 @@ from django.views.generic import ListView
 from .models import Todolist
 from datetime import datetime, timedelta
 from django.utils import timezone
-
-
+from django.contrib import messages
 # Create your views here.
 
 def todoList(request):
+    if request.method == 'POST':
+        newTask = request.POST.get('taskSubject')
+        if len(newTask)<=3:
+            messages.error(request, 'The task should have at least 4 characters.')
+        else:
+            a = Todolist(taskName=newTask) 
+            a.save()
+
     taskList = Todolist.objects.filter(isDeleted=False).order_by('isDone','updatedDate','id')
     daysKeep = 3
     past_date_before_daysKeep = timezone.now() - timedelta(days = daysKeep)
-
     ## Todolist.objects.filter(updatedDate__lte=daysKeep) ## bunu kullanamadık.
 
     filteredList = [i for i in taskList if (i.isDone and i.updatedDate >= past_date_before_daysKeep) or not i.isDone ]
-    
+
     # yukarıdaki tek satıra alternatif olarak:
     """ filteredList = []
     for i in taskList:
@@ -49,3 +55,4 @@ def deletedTodoItem(request, xxx):
         return redirect('todoList:index')
     except Todolist.DoesNotExist:
         return redirect('todoList:index')
+    
