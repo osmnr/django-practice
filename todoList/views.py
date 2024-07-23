@@ -14,8 +14,19 @@ def todoList(request):
         else:
             a = Todolist(taskName=newTask) 
             a.save()
+    pageFilter = request.GET.get('filter')
+    if pageFilter:
+        if pageFilter.lower() == 'undone':
+            taskList = Todolist.objects.filter(isDeleted=False, isDone=False).order_by('updatedDate','id')
+        elif pageFilter.lower() == 'done':
+            taskList = Todolist.objects.filter(isDeleted=False, isDone=True).order_by('updatedDate','id')
+        elif pageFilter.lower() == 'deleted':
+            taskList = Todolist.objects.filter(isDeleted=True).order_by('updatedDate','id')
+        else:
+            return redirect('todoList:index')
+    else:
+        taskList = Todolist.objects.filter(isDeleted=False).order_by('isDone','updatedDate','id')
 
-    taskList = Todolist.objects.filter(isDeleted=False).order_by('isDone','updatedDate','id')
     daysKeep = 3
     past_date_before_daysKeep = timezone.now() - timedelta(days = daysKeep)
     ## Todolist.objects.filter(updatedDate__lte=daysKeep) ## bunu kullanamadık.

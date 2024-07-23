@@ -9,6 +9,13 @@
         <div class="md:flex">
             <div class="p-8 w-full">
                 <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">To-Do List</div>
+                
+                <div class="mt-4 flex justify-around">
+                    <a href="{%url 'todoList:index' %}?filter=undone" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Undone</a>
+                    <a href="{%url 'todoList:index' %}?filter=done" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Done</a>
+                    <a href="{%url 'todoList:index' %}?filter=deleted" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Deleted</a>
+                </div>
+
                 <div class="mt-2">
                     <ul class="space-y-4">
                         {% for task in filteredList%}
@@ -24,7 +31,12 @@
                                 {% else  %}
                                 <a href="{% url 'todoList:update' task.id%}" class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</a>
                                 {% endif %}
-                                <a href= "{% url 'todoList:delete' task.id%}" class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2">Delete</a>
+                                {% if task.isDeleted %}
+                                <button type='button' class="px-2 py-1  text-xs font-medium rounded-md ml-2 cursor-not-allowed" disabled>Already Deleted</button>
+                                {% else %}
+                                <a href= "{% url 'todoList:delete' task.id%}" class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2" >Delete</a>
+                                {% endif %}
+                                
                             </div>
                         </li>
                         {% endfor %}
