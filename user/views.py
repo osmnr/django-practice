@@ -7,7 +7,7 @@ def userLogin(request):
     if request.user.is_authenticated:
         return redirect('home:home')
     if request.method == 'POST':
-        inputUserName = request.POST.get('username')
+        inputUserName = request.POST.get('username').lower()
         inputPassword = request.POST.get('password')
         user = authenticate(request, username=inputUserName, password=inputPassword)
         if user is not None:
@@ -21,7 +21,7 @@ def userRegister(request):
     if request.user.is_authenticated:
         return redirect('home:home')
     if request.method == 'POST':
-        inputUserName = request.POST.get('username')
+        inputUserName = request.POST.get('username').lower()
         inputEmail = request.POST.get('email')
         inputPass = request.POST.get('password')
         inputPass2 = request.POST.get('password2')

@@ -9,8 +9,8 @@
             </ul>
             <div class="relative">
                 <button id="userMenuButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
-                    <span>User</span>
-                    <svg class="fill-current w-4 h-4 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M5.516 6.548A4.474 4.474 0 0 0 2.5 10.5 4.5 4.5 0 1 0 10 2a4.474 4.474 0 0 0-3.452 1.516A4.491 4.491 0 0 0 5.5 3a4.5 4.5 0 0 0-4.5 4.5 4.492 4.492 0 0 0 4.516 4.548zM5 18a7 7 0 0 0 7-7c0-1.073-.174-2.108-.5-3.086A6.983 6.983 0 0 0 18 11c1.38 0 2.624-.466 3.646-1.234A4.492 4.492 0 0 0 17 13a7 7 0 0 0-12 0c0 1.38.466 2.624 1.234 3.646A6.983 6.983 0 0 0 2 13a6.978 6.978 0 0 0-1.086 3.086A7.004 7.004 0 0 0 5 18z"/></svg>
+                    <span>User {% if user.is_authenticated %}: {{user.username}} {%endif%}</span>
+                    
                 </button>
                 <ul id="userMenu" class="absolute hidden text-gray-700 pt-1">
                     {% if user.is_authenticated %}
