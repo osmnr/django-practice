@@ -1,19 +1,34 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from .models import Todolist
+from .models import Todolist, UsersTodoList
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.models import User
+
 # Create your views here.
 
+
 def todoList(request):
+    session_key = request.session.session_key
+    if(not session_key):
+        request.session.create()
+        session_key = request.session.session_key
+
     if request.method == 'POST':
         newTask = request.POST.get('taskSubject')
         if len(newTask)<=3:
             messages.error(request, 'The task should have at least 4 characters.')
         else:
-            a = Todolist(taskName=newTask) 
-            a.save()
+            if request.user.is_authenticated:
+                myUser=request.user
+                a = UsersTodoList(taskName=newTask, sessionKey=session_key, user=myUser)
+                a.save()
+            if not request.user.is_authenticated:
+                a = UsersTodoList(taskName=newTask, sessionKey=session_key)
+                a.save()
+
+
     pageFilter = request.GET.get('filter')
     if pageFilter:
         if pageFilter.lower() == 'undone':
@@ -26,6 +41,8 @@ def todoList(request):
             return redirect('todoList:index')
     else:
         taskList = Todolist.objects.filter(isDeleted=False).order_by('isDone','updatedDate','id')
+
+
 
     daysKeep = 3
     past_date_before_daysKeep = timezone.now() - timedelta(days = daysKeep)

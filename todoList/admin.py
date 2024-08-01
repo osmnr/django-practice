@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Todolist
+from .models import Todolist, UsersTodoList
 
 class TodolistAdmin(admin.ModelAdmin):
     list_display = ('id', 'taskName', 'updatedDate','isDone','isDeleted')
@@ -8,3 +8,4 @@ class TodolistAdmin(admin.ModelAdmin):
 
 # Register your models here.
 admin.site.register(Todolist, TodolistAdmin)
+admin.site.register(UsersTodoList)
