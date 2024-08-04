@@ -21,27 +21,40 @@ def todoList(request):
             messages.error(request, 'The task should have at least 4 characters.')
         else:
             if request.user.is_authenticated:
-                myUser=request.user
+                myUser = request.user
                 a = UsersTodoList(taskName=newTask, sessionKey=session_key, user=myUser)
                 a.save()
             if not request.user.is_authenticated:
                 a = UsersTodoList(taskName=newTask, sessionKey=session_key)
                 a.save()
 
-
-    pageFilter = request.GET.get('filter')
-    if pageFilter:
-        if pageFilter.lower() == 'undone':
-            taskList = Todolist.objects.filter(isDeleted=False, isDone=False).order_by('updatedDate','id')
-        elif pageFilter.lower() == 'done':
-            taskList = Todolist.objects.filter(isDeleted=False, isDone=True).order_by('updatedDate','id')
-        elif pageFilter.lower() == 'deleted':
-            taskList = Todolist.objects.filter(isDeleted=True).order_by('updatedDate','id')
+    if request.user.is_authenticated:
+        myUser = request.user
+        pageFilter = request.GET.get('filter')
+        if pageFilter:
+            if pageFilter.lower() == 'undone':
+                taskList = UsersTodoList.objects.filter(user=myUser, isDeleted=False, isDone=False).order_by('updatedDate','id')
+            elif pageFilter.lower() == 'done':
+                taskList = UsersTodoList.objects.filter(user=myUser, isDeleted=False, isDone=True).order_by('updatedDate','id')
+            elif pageFilter.lower() == 'deleted':
+                taskList = UsersTodoList.objects.filter(user=myUser, isDeleted=True).order_by('updatedDate','id')
+            else:
+                return redirect('todoList:index')
         else:
-            return redirect('todoList:index')
+            taskList = UsersTodoList.objects.filter(user=myUser,isDeleted=False).order_by('isDone','updatedDate','id')
     else:
-        taskList = Todolist.objects.filter(isDeleted=False).order_by('isDone','updatedDate','id')
-
+        pageFilter = request.GET.get('filter')
+        if pageFilter:
+            if pageFilter.lower() == 'undone':
+                taskList = UsersTodoList.objects.filter(sessionKey=session_key, isDeleted=False, isDone=False).order_by('updatedDate','id')
+            elif pageFilter.lower() == 'done':
+                taskList = UsersTodoList.objects.filter(sessionKey=session_key, isDeleted=False, isDone=True).order_by('updatedDate','id')
+            elif pageFilter.lower() == 'deleted':
+                taskList = UsersTodoList.objects.filter(sessionKey=session_key, isDeleted=True).order_by('updatedDate','id')
+            else:
+                return redirect('todoList:index')
+        else:
+            taskList = UsersTodoList.objects.filter(sessionKey=session_key,isDeleted=False).order_by('isDone','updatedDate','id')
 
 
     daysKeep = 3
@@ -59,6 +72,7 @@ def todoList(request):
     
     data = {
         'filteredList':filteredList,
+        'sessionId':session_key,
     }
     return render(request, 'todoList/todoList.html',data)
 

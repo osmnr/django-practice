@@ -9,7 +9,7 @@
         <div class="md:flex">
             <div class="p-8 w-full">
                 <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold">To-Do List</div>
-                
+                <h2>Current SessionId: {{sessionId}}</h2>
                 <div class="mt-4 flex justify-around">
                     <a href="{%url 'todoList:index' %}?filter=undone" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Undone</a>
                     <a href="{%url 'todoList:index' %}?filter=done" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Done</a>

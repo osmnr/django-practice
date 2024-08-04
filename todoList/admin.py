@@ -6,6 +6,11 @@ class TodolistAdmin(admin.ModelAdmin):
     readonly_fields = ('updatedDate',)
     list_display_links = ('id', 'taskName', 'updatedDate','isDone','isDeleted')
 
+
+class UsersTodoListAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'sessionKey', 'taskName', 'updatedDate', 'isDone','isDeleted' )
+
+
 # Register your models here.
 admin.site.register(Todolist, TodolistAdmin)
-admin.site.register(UsersTodoList)
+admin.site.register(UsersTodoList,UsersTodoListAdmin)

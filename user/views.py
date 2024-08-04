@@ -1,19 +1,26 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
+from todoList.models import UsersTodoList
 
 
 # Create your views here.
 def userLogin(request):
     if request.user.is_authenticated:
         return redirect('home:home')
+    temp_session = request.session.session_key
+    print("\n\n",temp_session,"\n\n")
+
     if request.method == 'POST':
         inputUserName = request.POST.get('username').lower()
         inputPassword = request.POST.get('password')
         user = authenticate(request, username=inputUserName, password=inputPassword)
         if user is not None:
             login(request,user)
+            userLessTaskList = UsersTodoList.objects.filter(sessionKey=temp_session)
+            for task in userLessTaskList:
+                task.user=user
+                task.save()             
             return redirect('home:home')
         else:
             print('username or password is incorrect')
