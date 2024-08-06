@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from .models import Todolist, UsersTodoList
+from .models import UsersTodoList
 from datetime import datetime, timedelta
 from django.utils import timezone
 from django.contrib import messages
@@ -38,10 +38,14 @@ def todoList(request):
                 taskList = UsersTodoList.objects.filter(user=myUser, isDeleted=False, isDone=True).order_by('updatedDate','id')
             elif pageFilter.lower() == 'deleted':
                 taskList = UsersTodoList.objects.filter(user=myUser, isDeleted=True).order_by('updatedDate','id')
+            elif pageFilter.lower() == 'other' and myUser.is_staff:
+                taskList = UsersTodoList.objects.all().exclude(user=myUser).order_by('updatedDate','id')
             else:
                 return redirect('todoList:index')
         else:
             taskList = UsersTodoList.objects.filter(user=myUser,isDeleted=False).order_by('isDone','updatedDate','id')
+    
+    
     else:
         pageFilter = request.GET.get('filter')
         if pageFilter:
@@ -76,25 +80,30 @@ def todoList(request):
     }
     return render(request, 'todoList/todoList.html',data)
 
+
 def updateTodoItem(request, pk):
     try:
-        todoItem = Todolist.objects.get(pk=pk)
+        todoItem = UsersTodoList.objects.get(pk=pk)
         if todoItem.isDone:
             todoItem.isDone = False
         else:
             todoItem.isDone = True
         todoItem.save()
         return redirect('todoList:index')
-    except Todolist.DoesNotExist:
+    except UsersTodoList.DoesNotExist:
         return redirect('todoList:index')
     
 
 def deletedTodoItem(request, xxx):
     try:
-        todoItem = Todolist.objects.get(pk=xxx)
-        todoItem.isDeleted = True
+        todoItem = UsersTodoList.objects.get(pk=xxx)
+        if todoItem.isDeleted == True and request.user.is_staff:
+            todoItem.isDeleted = False
+        else:
+            todoItem.isDeleted = True
         todoItem.save()
         return redirect('todoList:index')
-    except Todolist.DoesNotExist:
+    except UsersTodoList.DoesNotExist:
         return redirect('todoList:index')
     
+

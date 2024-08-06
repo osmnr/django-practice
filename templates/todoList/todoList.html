@@ -14,6 +14,9 @@
                     <a href="{%url 'todoList:index' %}?filter=undone" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Undone</a>
                     <a href="{%url 'todoList:index' %}?filter=done" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Done</a>
                     <a href="{%url 'todoList:index' %}?filter=deleted" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Deleted</a>
+                    {% if user.is_staff%}
+                    <a href="{%url 'todoList:index' %}?filter=other" class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">Others</a>
+                    {% endif %}
                 </div>
 
                 <div class="mt-2">
@@ -21,9 +24,9 @@
                         {% for task in filteredList%}
                         <li class="flex items-center justify-between">
                             {% if task.isDone %}
-                            <span class="text-gray-700"><strike>{{task.taskName}}</strike></span>
+                            <span class="text-gray-700"> {% if task.user.id != user.id %}    {{task.user}} - {% endif%} <strike>{{task.taskName}}</strike></span>
                             {% else  %}
-                            <span class="text-gray-700">{{task.taskName}}</span>
+                            <span class="text-gray-700"> {% if task.user.id != user.id %}    {{task.user}} -  {% endif%} {{task.taskName}}</span>
                             {% endif %}
                             <div>
                                 {% if task.isDone %}
@@ -31,8 +34,11 @@
                                 {% else  %}
                                 <a href="{% url 'todoList:update' task.id%}" class="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-md hover:bg-green-700">Done</a>
                                 {% endif %}
-                                {% if task.isDeleted %}
+                                
+                                {% if task.isDeleted and not user.is_staff %}
                                 <button type='button' class="px-2 py-1  text-xs font-medium rounded-md ml-2 cursor-not-allowed" disabled>Already Deleted</button>
+                                {% elif task.isDeleted and user.is_staff%}
+                                <a href= "{% url 'todoList:delete' task.id%}" class="px-2 py-1 bg-blue-500 text-white text-xs font-medium rounded-md hover:bg-blue-700 ml-2" >Undelete</a>
                                 {% else %}
                                 <a href= "{% url 'todoList:delete' task.id%}" class="px-2 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-700 ml-2" >Delete</a>
                                 {% endif %}
