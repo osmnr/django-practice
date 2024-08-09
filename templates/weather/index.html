@@ -13,19 +13,26 @@
 
 
 
-            
+            {% for city in cities%}
             <!-- Example City Weather Card -->
             <div class="bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-2xl font-semibold mb-4">City Name</h2>
+                <h2 class="text-2xl font-semibold mb-4">{{city.name}}</h2>
+                
                 <div class="flex items-center justify-between">
                     <div>
-                        <p class="text-3xl font-bold">25°C</p>
-                        <p class="text-gray-600">Clear Sky</p>
+                        {% if city.isError %}
+                        <p class="text-3xl ">Not Available</p>
+                        {% else %}
+                        <p class="text-3xl font-bold">{{city.temperature}} °C</p>
+                        <p class="text-gray-600">{{city.currentSky}}</p>
+                        {% endif %}
                     </div>
+                    {% if not city.isError %}
                     <img src="https://via.placeholder.com/100" alt="Sky Image" class="w-24 h-24 object-cover rounded-full">
+                    {% endif %}
                 </div>
             </div>
-            
+            {% endfor %}
             
         
 
