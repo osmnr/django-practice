@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import requests
 from .models import UserCity
 
@@ -16,11 +16,12 @@ def home(request):
                 jsonData = response.json()
                 temperature = jsonData['current']['temp_c']
                 currentSky = jsonData['current']['condition']['text']
-                cityData.append({'name':a,'temperature':temperature,'currentSky':currentSky })
+                imageUrl = jsonData['current']['condition']['icon'][2:]
+                cityData.append({'name':a,'temperature':temperature,'currentSky':currentSky, 'imageUrl':imageUrl })
             else:
                 cityData.append({'name':a, 'isError':True })
     else:
-        pass #redirect login
+        return redirect('user:userLogin')
     data = {
         'cities':cityData
     }
