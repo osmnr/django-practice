@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 import requests
 from .models import UserCity
+from django.urls import reverse
 
 # Create your views here.
 
@@ -21,7 +22,10 @@ def home(request):
             else:
                 cityData.append({'name':a, 'isError':True })
     else:
-        return redirect('user:userLogin')
+        loginUrl = reverse("user:userLogin")
+        nextUrl = reverse("weather:home")
+        url = loginUrl+"?next="+nextUrl
+        return redirect(url)
     data = {
         'cities':cityData
     }

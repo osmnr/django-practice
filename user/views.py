@@ -6,8 +6,6 @@ from todoList.models import UsersTodoList
 
 # Create your views here.
 def userLogin(request):
-    previous_page = request.META.get('HTTP_REFERER')
-    print("\n\n\n previouspage:", previous_page)
     if request.user.is_authenticated:
         return redirect('home:home')
     temp_session = request.session.session_key
@@ -22,9 +20,8 @@ def userLogin(request):
             for task in userLessTaskList:
                 task.user=user
                 task.save()
-            if request.META.get('HTTP_REFERER'):
-                print(request.META.get('HTTP_REFERER'),"\n\n")
-                return redirect(request.META.get('HTTP_REFERER'))
+            if request.GET.get('next'):
+                return redirect(request.GET.get('next'))
             return redirect('home:home')
         else:
             print('username or password is incorrect')
