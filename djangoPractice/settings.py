@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'todoList',
     'user',
     'weather',
+    'contactUs',
 ]
 
 MIDDLEWARE = [

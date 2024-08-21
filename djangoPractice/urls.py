@@ -26,6 +26,7 @@ urlpatterns = [
     path('todolist/', include('todoList.urls')),
     path('user/', include('user.urls')),
     path('weather/', include('weather.urls')),
+    path('contactUs/', include('contactUs.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
