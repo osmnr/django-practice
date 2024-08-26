@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Message Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+    {% include "home/components/header.html" %}
+  <div class="container mx-auto p-6">
+    <!-- Message Details -->
+    <div class="bg-white rounded shadow-md p-6 mb-6">
+      <h1 class="text-2xl font-bold mb-4">Message Details</h1>
+      <div class="mb-4">
+        <strong>Name:</strong> {{contactUsMessage.name}}
+      </div>
+      <div class="mb-4">
+        <strong>Email:</strong> {{contactUsMessage.email}}
+      </div>
+      <div class="mb-4">
+        <strong>Subject:</strong> {{contactUsMessage.subject}}
+      </div>
+      <div class="mb-4">
+        <strong>Message:</strong>
+        <p>{{contactUsMessage.message}}</p>
+      </div>
+      <div class="mb-4 text-gray-600">
+        <strong>Created At:</strong> {{contactUsMessage.createdAt | date:'d-m-Y'}}
+      </div>
+    </div>
+
+    <!-- Conversation Section -->
+    <div class="bg-white rounded shadow-md p-6">
+      <h2 class="text-xl font-bold mb-4">Conversation</h2>
+      <ul>
+        <!-- Example of a client reply -->
+        <li class="mb-4 flex justify-end">
+          <div class="p-4 bg-blue-100 rounded-l-lg rounded-tr-lg max-w-xl">
+            <div class="text-gray-700"><strong>Client (2024-08-27):</strong></div>
+            <div class="text-gray-800 mt-2">Could you provide more details about your services?</div>
+          </div>
+        </li>
+        <!-- Example of a site reply -->
+        <li class="mb-4 flex justify-start">
+          <div class="p-4 bg-green-100 rounded-r-lg rounded-tl-lg max-w-xl">
+            <div class="text-gray-700"><strong>Your Reply (2024-08-26):</strong></div>
+            <div class="text-gray-800 mt-2">Thank you for your inquiry. We offer various services including...</div>
+          </div>
+        </li>
+        <!-- Repeat the above li for each reply, alternating sides -->
+      </ul>
+    </div>
+
+        <!-- Reply Form -->
+        <div class="bg-white rounded shadow-md p-6 mb-6">
+            <h2 class="text-xl font-bold mb-4">Reply to Message</h2>
+            <form action="#">
+              <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="reply">
+                  Your Reply
+                </label>
+                <textarea id="reply" name="reply" rows="4" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+              </div>
+              <div class="flex justify-end">
+                <button type="submit" class="bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-600">
+                  Send Reply
+                </button>
+              </div>
+            </form>
+          </div>
+  </div>
+  {% include "home/components/footer.html" %}
+</body>
+</html>

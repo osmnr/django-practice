@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item List with Pagination</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans leading-normal tracking-normal">
+
+  {% include "home/components/header.html" %}
+  <div class="container mx-auto p-6">
+    <h1 class="text-3xl font-bold mb-4">Item List</h1>
+
+    <ul>
+        {% for item in filteredMessageList%}
+      <!-- Example item -->
+      <li class="mb-2 p-4 bg-white rounded shadow-md border-l-4 border-green-400">
+        <div class="text-lg font-semibold"><a href="{% url 'contactUs:contactUsDetail' item.id %}" >{{item.subject}}</a></div>
+        <div class="text-gray-600">Created on: <span class="font-medium">{{item.createdAt | date:'d-m-Y'}}</span></div>
+      </li>
+        {% endfor%}
+     
+      <!-- Repeat the above li for each item, add 'border-green-400' to the border for new items -->
+    </ul>
+
+    {% if filteredMessageList.paginator.num_pages > 1%}
+    <!-- Pagination -->
+    <div class="flex justify-between items-center mt-6">
+      {% if filteredMessageList.has_previous%}
+      <a href="?page={{filteredMessageList.previous_page_number}}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Previous</a>
+      {% else%}
+      <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" disabled>Previous</button>
+      {%endif%}
+      <div>Page 1 of {{filteredMessageList.paginator.num_pages}}</div>
+      {% if filteredMessageList.has_next%}
+      <a href="?page={{filteredMessageList.next_page_number}}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Next</a>
+      {% else%}
+      <button class="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" disabled>Next</button>
+      {%endif%}
+    </div>
+    {% endif%}
+  </div>
+
+  {% include "home/components/footer.html" %}
+</body>
+</html>

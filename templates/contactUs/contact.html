@@ -34,11 +34,19 @@
                     {% csrf_token %}
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-semibold text-gray-700">Name</label>
+                        {% if user.is_authenticated %}
+                        <input value= "{{user.username}}" disabled type="text" id="name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        {% else %}
                         <input type="text" id="name" name="name" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        {%endif%}
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-semibold text-gray-700">Email</label>
+                        {% if user.is_authenticated and user.email %}
+                        <input value="{{user.email}}" disabled type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        {% else%}
                         <input type="email" id="email" name="email" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600">
+                        {% endif%}
                     </div>
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-semibold text-gray-700">Subject</label>

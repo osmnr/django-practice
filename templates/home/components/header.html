@@ -3,11 +3,17 @@
         <a href="{% url 'home:home'%}" class="text-2xl font-bold">My Website</a>
         <nav class="flex space-x-4 items-center">
             <div class="relative">
+                <ul>
+                    {% if user.is_staff%}
+                    <li><a href="{%url 'contactUs:contactList' %}">Messages</a></li>
+                    {% endif%}
+                </ul>
+            </div>
+            <div class="relative">
                 <button id="userMenuButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center">
                     <span>User {% if user.is_authenticated %}: {{user.username}} {%endif%}</span>
-                    
                 </button>
-                <ul id="userMenu" class="absolute hidden text-gray-700 pt-1">
+                <ul id="userMenu" class="absolute hidden text-gray-700 pt-1 z-50">
                     {% if user.is_authenticated %}
                     <li><a class="rounded-b bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap" href="{%url 'user:userLogout'%}">Logout</a></li>
                     {% else %}
