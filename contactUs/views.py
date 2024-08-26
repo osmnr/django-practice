@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import contactMessage
+from .models import contactMessage, MessageReadByUser
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
@@ -40,25 +40,36 @@ def contactUs(request):
 def contactList(request):
     if request.user.is_staff:
         contactMessageList = contactMessage.objects.all()
+        messagesMyUserSaw = MessageReadByUser.objects.filter(read_userId=request.user.id)
+        listOfMessages = [item.messageId for item in messagesMyUserSaw]
         paginator = Paginator(contactMessageList, 5)
         pageNum = request.GET.get('page')
         filteredMessageList = paginator.get_page(pageNum)   
         data = {
             'filteredMessageList':filteredMessageList,
+            'listOfMessages':listOfMessages,
         }
     else:
         return redirect('home:home')
     return render(request,"contactUs/contactList.html",data)
 
+
 def contactUsDetail(request,id):
     if request.user.is_staff:
         try:
             contactUsMessage = contactMessage.objects.get(pk=id)
-            data = {
-                'contactUsMessage':contactUsMessage
-            }
+            try:
+                a = MessageReadByUser.objects.get(messageId=id, read_userId=request.user.id)
+            except MessageReadByUser.DoesNotExist:
+                a = MessageReadByUser(messageId=contactUsMessage, read_userId=request.user)
+                a.save()
         except contactMessage.DoesNotExist:
             return redirect('contactUs:contactList')
+        readByUserList = MessageReadByUser.objects.filter(messageId=id)
+        data = {
+                'contactUsMessage':contactUsMessage,
+                'readByUserList':readByUserList,
+            }   
     else:
         return redirect('home:home')
     return render(request,"contactUs/contactDetail.html",data)

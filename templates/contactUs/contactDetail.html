@@ -28,6 +28,11 @@
       <div class="mb-4 text-gray-600">
         <strong>Created At:</strong> {{contactUsMessage.createdAt | date:'d-m-Y'}}
       </div>
+      <div class="mb-4 text-gray-600">
+        <strong>Read by:</strong> {% for user in readByUserList %}<span>{{user.read_userId.username}}</span> {% endfor%}
+      </div>
+
+      
     </div>
 
     <!-- Conversation Section -->
