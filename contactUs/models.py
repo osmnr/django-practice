@@ -17,7 +17,19 @@ class contactMessage(models.Model):
 class MessageReadByUser(models.Model):
     messageId = models.ForeignKey(contactMessage,on_delete=models.CASCADE)
     read_userId = models.ForeignKey(User, on_delete= models.CASCADE)
+    readAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.messageId}-{self.read_userId}"
     
+
+
+class ContactMessageReplies(models.Model):
+    contactMessageId = models.ForeignKey(contactMessage,on_delete=models.CASCADE)
+    isClient = models.BooleanField()
+    replyUserId = models.ForeignKey(User,on_delete=models.PROTECT, null=True, blank=True)
+    replyMessage = models.TextField()
+    replyDate = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.contactMessageId.subject}__{self.replyDate}"

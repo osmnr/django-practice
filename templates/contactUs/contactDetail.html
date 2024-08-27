@@ -39,25 +39,32 @@
     <div class="bg-white rounded shadow-md p-6">
       <h2 class="text-xl font-bold mb-4">Conversation</h2>
       <ul>
+        {% for message in replyMessages%}
         <!-- Example of a client reply -->
+         {% if message.isClient %}
         <li class="mb-4 flex justify-end">
           <div class="p-4 bg-blue-100 rounded-l-lg rounded-tr-lg max-w-xl">
-            <div class="text-gray-700"><strong>Client (2024-08-27):</strong></div>
-            <div class="text-gray-800 mt-2">Could you provide more details about your services?</div>
+            <div class="text-gray-700"><strong>Client at {{message.replyDate | date:'Y-M-d'}}:</strong></div>
+            <div class="text-gray-800 mt-2">{{message.replyMessage}}</div>
           </div>
         </li>
+        {% endif%}
+        {% if not message.isClient %}
         <!-- Example of a site reply -->
         <li class="mb-4 flex justify-start">
           <div class="p-4 bg-green-100 rounded-r-lg rounded-tl-lg max-w-xl">
-            <div class="text-gray-700"><strong>Your Reply (2024-08-26):</strong></div>
-            <div class="text-gray-800 mt-2">Thank you for your inquiry. We offer various services including...</div>
+            <div class="text-gray-700"><strong>Your Reply  at {{message.replyDate | date:'Y-M-d'}}:</strong></div>
+            <div class="text-gray-800 mt-2">{{message.replyMessage}}</div>
           </div>
         </li>
+        {% endif%}
+        {% endfor %}
         <!-- Repeat the above li for each reply, alternating sides -->
       </ul>
     </div>
 
         <!-- Reply Form -->
+        
         <div class="bg-white rounded shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold mb-4">Reply to Message</h2>
             <form action="#">
@@ -74,6 +81,7 @@
               </div>
             </form>
           </div>
+          
   </div>
   {% include "home/components/footer.html" %}
 </body>
