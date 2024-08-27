@@ -11,6 +11,3 @@ def RandomStringGenerator(strLen):
         a = random.choice(list)
         myRandomString = myRandomString+a
     print(myRandomString)
-
-
-print(RandomStringGenerator(20))

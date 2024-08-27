@@ -4,6 +4,7 @@ from .models import contactMessage, MessageReadByUser, ContactMessageReplies
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from random import RandomStringGenerator
 # Create your views here.
 
 
