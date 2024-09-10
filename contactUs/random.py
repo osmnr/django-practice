@@ -10,4 +10,4 @@ def RandomStringGenerator(strLen):
     for i in range(strLen):
         a = random.choice(list)
         myRandomString = myRandomString+a
-    print(myRandomString)
+    return myRandomString

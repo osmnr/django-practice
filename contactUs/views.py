@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from .models import contactMessage, MessageReadByUser, ContactMessageReplies
+from .models import contactMessage, MessageReadByUser, ContactMessageReplies, ContactMessageToken
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from random import RandomStringGenerator
+from contactUs.random import RandomStringGenerator
+from django.core.mail import send_mail
+from djangoPractice.keys import *
+from datetime import timedelta, datetime
+from django.utils import timezone
+
 # Create your views here.
 
 
 def contactUs(request):
     if request.method == 'POST':
-        if request.user:
+        if request.user.is_authenticated:
             name = request.user.username
             if request.user.email:
                 email = request.user.email
@@ -30,6 +35,23 @@ def contactUs(request):
                 a = contactMessage(name=name, email=email, subject=subject, message=message)
                 a.save()
                 messages.success(request, 'Thank you for contacting us! Your message has been received!')
+                # contact message başarılı bi şekilde kaydedildi, şimdi token oluşturup mail gönderebiliriz.
+                body = f"Hello {name}\nYour message has been received!\nIf you wish to add anyhing to your contact message, you can reply via below url:"
+                mailList = list(email)
+                #send_mail(subject, body, EMAIL_HOST_USER, mailList)
+                
+                flag=True
+                while(flag):
+                    token = RandomStringGenerator(20)
+                    try:
+                        xyz = ContactMessageToken.objects.get(token=token)
+                    except ContactMessageToken.DoesNotExist:
+                        flag=False
+
+                daysKeep = 30
+                expryDateAfterDayskeep = datetime.now() + timedelta(days = daysKeep)
+                tokenObject = ContactMessageToken(messageId=a ,token=token ,expiryDate=expryDateAfterDayskeep)
+                tokenObject.save()
             except contactMessage.DoesNotExist:
                 messages.error(request, 'Invalid entry')
         else:
@@ -66,13 +88,40 @@ def contactUsDetail(request,id):
                 a.save()
         except contactMessage.DoesNotExist:
             return redirect('contactUs:contactList')
+        if request.method=='POST':
+            newMessage = request.POST.get('reply')
+            contactUsMessage = contactMessage.objects.get(pk=id)
+            b = ContactMessageReplies(contactMessageId=contactUsMessage,isClient=False,replyUserId=request.user,replyMessage=newMessage)
+            b.save()
         readByUserList = MessageReadByUser.objects.filter(messageId=id)
         replyMessages = ContactMessageReplies.objects.filter(contactMessageId=id)
         data = {
                 'contactUsMessage':contactUsMessage,
                 'readByUserList':readByUserList,
-                'replyMessages':replyMessages
+                'replyMessages':replyMessages,
             }   
     else:
         return redirect('home:home')
+    return render(request,"contactUs/contactDetail.html",data)
+
+
+def contactUsReply(request,msgId,token):
+    isClientView = True
+    try:
+        verify = ContactMessageToken.objects.get(messageId=msgId,token=token)
+        if verify.expiryDate > timezone.now():
+            print("timezonenow: ",timezone.now(), "expiryDate: ",verify.expiryDate, "\n\n\n")
+            contactUsMessage = contactMessage.objects.get(pk=msgId)
+            replyMessages = ContactMessageReplies.objects.filter(contactMessageId=msgId)
+        else:
+            messages.error(request, 'Expired Token!')
+            return redirect('home:home')
+    except ContactMessageToken.DoesNotExist:
+        messages.error(request, 'Token & Id do not match!')
+        return redirect('home:home')
+    data = {
+        'contactUsMessage':contactUsMessage,
+        'isClientView':isClientView,
+        'replyMessages':replyMessages,
+        }
     return render(request,"contactUs/contactDetail.html",data)

@@ -7,4 +7,5 @@ urlpatterns = [
    path('', views.contactUs, name='contactUs'),
    path('list/', views.contactList, name='contactList'),
    path('detail/<int:id>/', views.contactUsDetail, name='contactUsDetail'),
+   path('reply/<str:token>/<int:msgId>/',views.contactUsReply, name='contactUsReply'),
 ]

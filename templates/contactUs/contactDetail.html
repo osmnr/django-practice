@@ -28,10 +28,11 @@
       <div class="mb-4 text-gray-600">
         <strong>Created At:</strong> {{contactUsMessage.createdAt | date:'d-m-Y'}}
       </div>
+      {% if not isClientView%}
       <div class="mb-4 text-gray-600">
         <strong>Read by:</strong> {% for user in readByUserList %}<span>{{user.read_userId.username}}</span> {% endfor%}
       </div>
-
+      {% endif%}
       
     </div>
 
@@ -44,7 +45,7 @@
          {% if message.isClient %}
         <li class="mb-4 flex justify-end">
           <div class="p-4 bg-blue-100 rounded-l-lg rounded-tr-lg max-w-xl">
-            <div class="text-gray-700"><strong>Client at {{message.replyDate | date:'Y-M-d'}}:</strong></div>
+            <div class="text-gray-700"><strong>{% if not isClientView %}Client at {%else%} You at {%endif%}  {{message.replyDate | date:'Y-M-d'}}:</strong></div>
             <div class="text-gray-800 mt-2">{{message.replyMessage}}</div>
           </div>
         </li>
@@ -53,7 +54,7 @@
         <!-- Example of a site reply -->
         <li class="mb-4 flex justify-start">
           <div class="p-4 bg-green-100 rounded-r-lg rounded-tl-lg max-w-xl">
-            <div class="text-gray-700"><strong>Your Reply  at {{message.replyDate | date:'Y-M-d'}}:</strong></div>
+            <div class="text-gray-700"><strong>{% if isClientView %} Admin at {%else%} {{message.replyUserId.username}} at {%endif%} {{message.replyDate | date:'Y-M-d'}}:</strong></div>
             <div class="text-gray-800 mt-2">{{message.replyMessage}}</div>
           </div>
         </li>
@@ -67,7 +68,8 @@
         
         <div class="bg-white rounded shadow-md p-6 mb-6">
             <h2 class="text-xl font-bold mb-4">Reply to Message</h2>
-            <form action="#">
+            <form method='post'>
+              {% csrf_token %}
               <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="reply">
                   Your Reply

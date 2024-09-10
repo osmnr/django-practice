@@ -33,3 +33,12 @@ class ContactMessageReplies(models.Model):
 
     def __str__(self):
         return f"{self.contactMessageId.subject}__{self.replyDate}"
+    
+
+class ContactMessageToken(models.Model):
+    messageId = models.ForeignKey(contactMessage,on_delete=models.CASCADE)
+    token = models.CharField(max_length=20, unique=True)
+    expiryDate = models.DateTimeField()
+
+    def __str__(self):
+        return self.token
