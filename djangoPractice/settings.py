@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'user',
     'weather',
     'contactUs',
-    'livechat',
+    'bug',
 ]
 
 MIDDLEWARE = [
