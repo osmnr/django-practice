@@ -1,1 +1,48 @@
-<h1>hello bug page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reported Bugs</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto mt-10">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold mb-4">Reported Bugs</h1>
+      <table class="min-w-full bg-white border-collapse border border-gray-200">
+        <thead>
+          <tr>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Bug ID</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Title</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Status</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Assignee</th>
+            <th class="px-6 py-3 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">Created at</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+
+
+            {% for bug in buglist %}
+          <!-- Example Row -->
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{bug.id}}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{bug.bugTitle}}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                {{bug.taskStatus}}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{bug.assignedTo}}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{bug.reportedAt}}</td>
+          </tr>
+          <!-- Add more rows as needed -->
+            {% endfor %}
+
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

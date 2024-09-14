@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bug Detail</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+  <div class="container mx-auto mt-10">
+    <div class="bg-white p-6 rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold mb-4">Bug Detail</h1>
+      
+      <!-- Bug Info Section -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-gray-800">Bug ID: #{{bug.id}}</h2>
+        <p class="text-gray-600 mt-2">Description: <span class="text-gray-800">{{bug.bugTitle}}</span></p>
+        <p class="text-gray-600 mt-2">Status: 
+          <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+            {{bug.taskStatus}}
+          </span>
+        </p>
+        <p class="text-gray-600 mt-2">Assignee: <span class="text-gray-800">{{bug.assignedTo}}</span></p>
+        <p class="text-gray-600 mt-2">Created At: <span class="text-gray-800">{{bug.reportedAt}}</span></p>
+      </div>
+
+      <!-- Bug Comments Section -->
+      <div class="mt-8">
+        <h3 class="text-lg font-medium text-gray-800 mb-4">Comments</h3>
+        <ul class="space-y-4">
+        {% for comment in commentList%}
+          <!-- Example comment -->
+          <li class="bg-gray-50 p-4 rounded-lg">
+            <div class="text-sm text-gray-600">
+              <span class="font-semibold">{{comment.commenter}}</span> - <span class="italic">{{comment.date}}</span>
+            </div>
+            <p class="text-gray-700 mt-2">{{comment.comment}}</p>
+          </li>
+          {% endfor %}
+
+          <!-- Add more comments as needed -->
+        </ul>
+      </div>
+
+      <!-- Add Comment Form -->
+      <div class="mt-8">
+        <h3 class="text-lg font-medium text-gray-800 mb-4">Add a Comment</h3>
+        <form action="#" method="POST">
+          <div class="mb-4">
+            <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
+            <textarea id="comment" name="comment" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+          </div>
+          <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
+        </form>
+      </div>
+
+      <!-- Back to Bug List -->
+      <div class="mt-8">
+        <a href="http://localhost:3000/bug/" class="text-blue-600 hover:text-blue-800">Back to Bug List</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

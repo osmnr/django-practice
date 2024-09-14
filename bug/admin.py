@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Bug, BugStatus, BugTransactionType
+from .models import Bug, BugStatus, BugTransactionType, Comment
 # Register your models here.
 
 
@@ -12,7 +12,13 @@ class BugAdmin(admin.ModelAdmin):
 class BugTransactionTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'trxTypeText')
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('id', 'comment')
+
+
+
 # Register your models here.
 admin.site.register(Bug,BugAdmin)
 admin.site.register(BugStatus,BugStatusAdmin)
 admin.site.register(BugTransactionType,BugTransactionTypeAdmin)
+admin.site.register(Comment,CommentAdmin)
