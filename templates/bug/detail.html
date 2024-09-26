@@ -6,9 +6,9 @@
   <title>Bug Detail</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 font-sans">
+<body class="bg-gray-100 font-sans" style="background-color: #242424">
   <div class="container mx-auto mt-10">
-    <div class="bg-white p-6 rounded-lg shadow-lg">
+    <div class="bg-white p-6 rounded-lg shadow-lg" style="background-color:#788fab">
       <h1 class="text-3xl font-bold mb-4">Bug Detail</h1>
       
       <!-- Bug Info Section -->
@@ -20,7 +20,7 @@
             {{bug.taskStatus}}
           </span>
         </p>
-        <p class="text-gray-600 mt-2">Assignee: <span class="text-gray-800">{{bug.assignedTo}}</span></p>
+        <p class="text-gray-600 mt-2">Created By: <span class="text-gray-800">{{bug.createdBy}}</span></p>
         <p class="text-gray-600 mt-2">Created At: <span class="text-gray-800">{{bug.reportedAt}}</span></p>
       </div>
 
@@ -30,14 +30,17 @@
         <ul class="space-y-4">
         {% for comment in commentList%}
           <!-- Example comment -->
-          <li class="bg-gray-50 p-4 rounded-lg">
+          {% if comment.isDevNote%}
+          <li class="bg-gray-50 p-4 rounded-lg" style="background-color:#f2c76b">
+          {% else %}
+          <li class="bg-gray-50 p-4 rounded-lg" style="background-color:#9ff5f1">
+          {%endif%}
             <div class="text-sm text-gray-600">
               <span class="font-semibold">{{comment.commenter}}</span> - <span class="italic">{{comment.date}}</span>
             </div>
             <p class="text-gray-700 mt-2">{{comment.comment}}</p>
-          </li>
+            </li>
           {% endfor %}
-
           <!-- Add more comments as needed -->
         </ul>
       </div>
@@ -45,10 +48,16 @@
       <!-- Add Comment Form -->
       <div class="mt-8">
         <h3 class="text-lg font-medium text-gray-800 mb-4">Add a Comment</h3>
-        <form action="#" method="POST">
+        <form method="post">
+          {% csrf_token %}
           <div class="mb-4">
             <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
             <textarea id="comment" name="comment" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
+              <input type="radio" id="reply" name="commentType" value="False">
+              <label for="html">Reply</label><br>
+              <input type="radio" id="note" name="commentType" value="True" checked="checked">
+              <label for="css">Note</label><br>
+
           </div>
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
         </form>

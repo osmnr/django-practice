@@ -14,6 +14,15 @@ def bug(request):
 def detail(request, id):
     bug = Bug.objects.get(id=id)
     commentList = Comment.objects.filter(source=bug.id).order_by('date','id')
+    #filtering the comment list depending on the user's staff auth
+    if not request.user.is_staff:
+        commentList = Comment.objects.filter(source=bug.id, isDevNote=False).order_by('date','id')
+    # adding new comment to db
+    if request.method=='POST':
+        newComment = request.POST.get('comment')
+        isDev = request.user.is_staff
+        a = Comment(source=bug, commenter=request.user, comment=newComment, isDevNote=isDev)
+        a.save()
     data = {
         'bug':bug,
         'commentList': commentList,
