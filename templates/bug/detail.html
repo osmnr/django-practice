@@ -15,10 +15,17 @@
       <div class="mb-6">
         <h2 class="text-xl font-semibold text-gray-800">Bug ID: #{{bug.id}}</h2>
         <p class="text-gray-600 mt-2">Description: <span class="text-gray-800">{{bug.bugTitle}}</span></p>
-        <p class="text-gray-600 mt-2">Status: 
+        <p class="text-gray-600 mt-2">Task Status: 
           <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
             {{bug.taskStatus}}
           </span>
+          
+          <p class="text-gray-600 mt-2"> Change Status to:
+          {% for stat in possibleStats%}
+            <a href="#"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+              {{stat}}
+            </span></a>
+          {%endfor%}
         </p>
         <p class="text-gray-600 mt-2">Created By: <span class="text-gray-800">{{bug.createdBy}}</span></p>
         <p class="text-gray-600 mt-2">Created At: <span class="text-gray-800">{{bug.reportedAt}}</span></p>
@@ -53,11 +60,12 @@
           <div class="mb-4">
             <label for="comment" class="block text-sm font-medium text-gray-700">Comment</label>
             <textarea id="comment" name="comment" rows="4" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"></textarea>
-              <input type="radio" id="reply" name="commentType" value="False">
-              <label for="html">Reply</label><br>
-              <input type="radio" id="note" name="commentType" value="True" checked="checked">
-              <label for="css">Note</label><br>
-
+             {% if not isClientView%}
+            <input type="radio" id="reply" name="commentType" value="reply">
+            <label for="html">Reply</label><br>
+            <input type="radio" id="note" name="commentType" value="note" checked="checked">
+            <label for="css">Note</label><br>
+            {% endif%}
           </div>
           <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Submit</button>
         </form>
