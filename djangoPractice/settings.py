@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'weather',
     'contactUs',
     'bug',
+    'api',
 ]
 
 MIDDLEWARE = [

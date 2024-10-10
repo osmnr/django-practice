@@ -28,5 +28,6 @@ urlpatterns = [
     path('weather/', include('weather.urls')),
     path('contactUs/', include('contactUs.urls')),
     path('bug/', include('bug.urls')),
+    path('api/', include('api.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
